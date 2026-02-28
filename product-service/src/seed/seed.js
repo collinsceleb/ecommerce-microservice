@@ -1,14 +1,4 @@
-/**
- * @module seed/seed
- * @description Seeds the database with initial product data if the collection is empty.
- */
-
 const Product = require("../models/Product");
-
-/**
- * Seed products into the database.
- * Only inserts if no products exist to avoid duplicates on restarts.
- */
 const seedProducts = async () => {
     try {
         const count = await Product.countDocuments();

@@ -1,23 +1,12 @@
-/**
- * @module __tests__/order.test
- * @description Integration tests for the Order Service API endpoints.
- * Uses Supertest to make HTTP requests against the Express app.
- * MongoDB and Axios (Payment Service call) are mocked using Jest.
- */
-
 const request = require("supertest");
 const express = require("express");
 const axios = require("axios");
 const orderRoutes = require("../routes/orderRoutes");
 const Order = require("../models/Order");
 
-// Mock dependencies
 jest.mock("../models/Order");
 jest.mock("axios");
 
-/**
- * Create a lightweight Express app for testing (no DB connection needed).
- */
 const app = express();
 app.use(express.json());
 app.use("/api/orders", orderRoutes);
@@ -37,10 +26,8 @@ describe("Order Service API", () => {
                 orderStatus: "pending",
             };
 
-            // Mock Order.create to return the mock order
             Order.create.mockResolvedValue(mockOrder);
 
-            // Mock axios.post (Payment Service call) to resolve successfully
             axios.post.mockResolvedValue({
                 data: { success: true, message: "Payment processed", orderId: "order123" },
             });
@@ -62,7 +49,6 @@ describe("Order Service API", () => {
                 orderStatus: "pending",
             });
 
-            // Verify Order.create was called with correct data
             expect(Order.create).toHaveBeenCalledWith({
                 customerId: "cust1",
                 productId: "prod1",
@@ -70,7 +56,6 @@ describe("Order Service API", () => {
                 orderStatus: "pending",
             });
 
-            // Verify Payment Service was called
             expect(axios.post).toHaveBeenCalledWith(
                 expect.stringContaining("/api/payments"),
                 {
@@ -93,7 +78,6 @@ describe("Order Service API", () => {
 
             Order.create.mockResolvedValue(mockOrder);
 
-            // Simulate Payment Service failure
             axios.post.mockRejectedValue(new Error("Payment service unavailable"));
 
             const res = await request(app)
@@ -104,7 +88,6 @@ describe("Order Service API", () => {
                     amount: 129.99,
                 });
 
-            // Order should still be created successfully
             expect(res.status).toBe(201);
             expect(res.body.success).toBe(true);
             expect(res.body.data.orderStatus).toBe("pending");

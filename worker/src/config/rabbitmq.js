@@ -1,17 +1,7 @@
-/**
- * @module config/rabbitmq
- * @description Establishes connection to RabbitMQ and provides a consume helper.
- */
-
 const amqplib = require("amqplib");
 
 const QUEUE_NAME = "payment_queue";
 
-/**
- * Connects to RabbitMQ and starts consuming messages from the payment queue.
- * @param {Function} onMessage - Callback invoked with the parsed message data.
- * @returns {Promise<void>}
- */
 const consumeFromQueue = async (onMessage) => {
     try {
         const connection = await amqplib.connect(process.env.RABBITMQ_URL);
@@ -29,7 +19,6 @@ const consumeFromQueue = async (onMessage) => {
                     console.log("[Worker] Message acknowledged");
                 } catch (err) {
                     console.error("[Worker] Error processing message:", err.message);
-                    // Reject and requeue the message
                     channel.nack(msg, false, true);
                 }
             }

@@ -1,7 +1,3 @@
-/**
- * @module config/rabbitmq
- * @description Establishes connection to RabbitMQ and provides a publish helper.
- */
 
 const amqplib = require("amqplib");
 
@@ -9,11 +5,6 @@ let channel = null;
 
 const QUEUE_NAME = "payment_queue";
 
-/**
- * Connects to RabbitMQ and creates a channel.
- * Asserts the payment_queue exists.
- * @returns {Promise<void>}
- */
 const connectRabbitMQ = async () => {
     try {
         const connection = await amqplib.connect(process.env.RABBITMQ_URL);
@@ -26,10 +17,6 @@ const connectRabbitMQ = async () => {
     }
 };
 
-/**
- * Publishes a message to the payment queue.
- * @param {Object} data - The data to publish (will be JSON-stringified).
- */
 const publishToQueue = (data) => {
     if (!channel) {
         throw new Error("RabbitMQ channel not initialised");

@@ -1,21 +1,10 @@
-/**
- * @module __tests__/product.test
- * @description Integration tests for the Product Service API endpoints.
- * Uses Supertest to make HTTP requests against the Express app.
- * MongoDB operations are mocked using Jest.
- */
-
 const request = require("supertest");
 const express = require("express");
 const productRoutes = require("../routes/productRoutes");
 const Product = require("../models/Product");
 
-// Mock Mongoose model methods
 jest.mock("../models/Product");
 
-/**
- * Create a lightweight Express app for testing (no DB connection needed).
- */
 const app = express();
 app.use(express.json());
 app.use("/api/products", productRoutes);

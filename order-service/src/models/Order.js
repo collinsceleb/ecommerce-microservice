@@ -1,19 +1,5 @@
-/**
- * @module models/Order
- * @description Mongoose schema and model for the Order entity.
- */
-
 const mongoose = require("mongoose");
 
-/**
- * Order Schema
- * @typedef {Object} Order
- * @property {string} customerId - ID of the customer placing the order (required).
- * @property {string} productId - ID of the product being ordered (required).
- * @property {number} amount - Total amount for the order (required).
- * @property {string} orderStatus - Current status of the order (defaults to "pending").
- * @property {Date} createdAt - Timestamp of record creation.
- */
 const orderSchema = new mongoose.Schema({
     customerId: {
         type: String,

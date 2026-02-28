@@ -1,13 +1,5 @@
-/**
- * @module __tests__/worker.test
- * @description Unit tests for the RabbitMQ Worker.
- * Tests the message handling logic that saves transaction history to MongoDB.
- * Both MongoDB and RabbitMQ are mocked using Jest.
- */
-
 const TransactionHistory = require("../models/TransactionHistory");
 
-// Mock Mongoose model methods
 jest.mock("../models/TransactionHistory");
 
 describe("Worker — Message Handler", () => {
@@ -15,10 +7,6 @@ describe("Worker — Message Handler", () => {
         jest.clearAllMocks();
     });
 
-    /**
-     * Replicate the handleMessage function from src/index.js
-     * so we can test it in isolation without requiring a real RabbitMQ connection.
-     */
     const handleMessage = async (data) => {
         const { customerId, orderId, productId, amount } = data;
         const record = await TransactionHistory.create({
